@@ -81,5 +81,21 @@ const spec=async(req,res)=>{
    else{res.send("fail"+err)}
    })
 }
-module.exports={del,post1,putt,all,spec}
+const query=async (req,res)=>{
+    const name=req.params.name
+    const Artist=req.params.Artist
+   const params={
+    TableName:name,
+    KeyConditionExpression:"Artist =:a",
+    ExpressionAttributeValues:{
+        ":a":{S:Artist}
+    }
+ }
+ console.log(params);
+ await ddb.query(params,(err,data)=>{//fetching only queried data from db
+    if(!err){res.send(data.Items)} 
+ else{res.send("fail"+err)}
+ })
+}
+module.exports={del,post1,putt,all,spec,query}
 
